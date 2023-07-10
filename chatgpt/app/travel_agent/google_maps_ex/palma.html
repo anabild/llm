@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Travel Map Circuit</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap" async defer></script>
+</head>
+<body>
+    <h1>🗺️ Advanced Travel Map Circuit</h1>
+
+    <!-- Add your itinerary here -->
+
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: { lat: 39.57119, lng: 2.646634 }
+            });
+
+            // Add coordinates for each location
+            var coordinates = [
+                { lat: 39.57119, lng: 2.646634 }, // Palma de Mallorca
+                { lat: 39.566206, lng: 2.619256 }, // Bellver Castle
+                { lat: 39.55, lng: 3.3333 }, // Porto Cristo
+                { lat: 39.53, lng: 3.32 }, // Caves of Drach
+                { lat: 39.853267, lng: 3.122646 }, // Alcúdia
+                { lat: 39.881575, lng: 3.0153 }, // Pollença
+                { lat: 39.765208, lng: 2.715509 }, // Sóller
+                { lat: 39.796834, lng: 2.699279 }, // Port de Sóller
+                { lat: 39.711348, lng: 2.622738 }, // Valldemossa
+                { lat: 39.748205, lng: 2.718329 }, // Deià
+                { lat: 39.722754, lng: 2.655183 }, // Fornalutx
+            ];
+
+            // Add markers and info windows for each location
+            for (var i = 0; i < coordinates.length; i++) {
+                var marker = new google.maps.Marker({
+                    position: coordinates[i],
+                    map: map,
+                    label: (i + 1).toString(),
+                    // Add your custom icon here: icon: 'path/to/your/icon.png'
+                });
+
+                // Add your custom photo URL here: var photoUrl = 'path/to/your/photo.jpg';
+                var contentString = '<div id="content">' +
+                    '<h3>Location ' + (i + 1) + '</h3>' +
+                    // '<img src="' + photoUrl + '" width="200" />' +
+                    '<p>Description for location ' + (i + 1) + '</p>' +
+                    '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+   });
+
+            addInfoWindowListener(marker, infowindow);
+        }
+
+        // Draw lines between the destinations with varying colors
+        var lineColors = ['#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF', '#FFFF00'];
+        for (var i = 0; i < coordinates.length - 1; i++) {
+            var line = new google.maps.Polyline({
+                path: [coordinates[i], coordinates[i + 1]],
+                strokeColor: lineColors[i % lineColors.length],
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                map: map
+            });
+        }
+
+        function addInfoWindowListener(marker, infowindow) {
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        }
+    }
+</script>
+</body>
+</html>
